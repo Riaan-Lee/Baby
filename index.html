@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Valentine's Day, Shelly! 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comic+Neue:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Custom heart cursor (visual only; real cursor hidden in CSS) -->
+    <div id="heart-cursor" class="heart-cursor" aria-hidden="true"></div>
+
+    <!-- Nav bar: icons for each section -->
+    <nav class="main-nav" role="navigation">
+      <button
+        type="button"
+        class="nav-btn active"
+        data-section="landing"
+        title="Home"
+      >
+        🏠
+      </button>
+      <button
+        type="button"
+        class="nav-btn"
+        data-section="heart-catcher"
+        title="Heart Catcher"
+      >
+        💘
+      </button>
+      <button
+        type="button"
+        class="nav-btn"
+        data-section="love-quiz"
+        title="Love Quiz"
+      >
+        ❓
+      </button>
+      <button
+        type="button"
+        class="nav-btn"
+        data-section="message-board"
+        title="Message Board"
+      >
+        💞
+      </button>
+      <button
+        type="button"
+        class="nav-btn"
+        data-section="photo-wall"
+        title="Photo Frames"
+      >
+        🎁
+      </button>
+      <button
+        type="button"
+        class="nav-btn"
+        id="poem-btn"
+        title="A poem for you"
+      >
+        💌
+      </button>
+      <button
+        type="button"
+        class="nav-btn"
+        id="countdown-btn"
+        title="Countdown"
+      >
+        ⭐
+      </button>
+    </nav>
+
+    <!-- Background music: starts on "Yes", loops at low volume (rename src to match your MP3) -->
+    <audio id="valentine-bg-music" loop preload="auto">
+      <source src="assets/music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- ========== LANDING SECTION ========== -->
+    <section id="landing" class="section active">
+      <div class="floating-hearts-bg" id="floating-hearts"></div>
+      <div class="balloons-container" id="balloons"></div>
+
+      <div class="landing-content">
+        <div class="big-heart-wrapper">
+          <div class="big-heart" id="big-heart" aria-hidden="true">❤️</div>
+        </div>
+        <h1 class="landing-title">Happy Valentine's Day, Shelly!</h1>
+        <p class="landing-sub">Will you be my Valentine?</p>
+        <div class="valentine-buttons">
+          <button type="button" class="btn btn-yes" id="btn-yes">
+            Yes! 💕
+          </button>
+          <button type="button" class="btn btn-no" id="btn-no">No</button>
+        </div>
+      </div>
+
+      <!-- Confetti container (shown when Yes is clicked) -->
+      <div
+        id="confetti-container"
+        class="confetti-container"
+        aria-hidden="true"
+      ></div>
+    </section>
+
+    <!-- ========== HEART CATCHER GAME ========== -->
+    <section id="heart-catcher" class="section">
+      <div class="game-header">
+        <h2>💘 Heart Catcher</h2>
+        <p class="score-label">
+          Hearts: <span id="heart-score">0</span> &nbsp; Level
+          <span id="heart-level">1</span> &nbsp; Time:
+          <span id="heart-timer">45</span>s &nbsp; Best:
+          <span id="heart-high-score">0</span>
+        </p>
+        <p class="game-instruction">
+          Catch hearts, avoid bombs 💣 (they cost 5!). Reach level targets before time runs out. Watch for MEGA HEARTS — catch them for a sweet surprise! 💖
+        </p>
+      </div>
+      <div class="game-canvas-wrap">
+        <div
+          id="milestone-overlay"
+          class="milestone-overlay"
+          aria-live="polite"
+        ></div>
+        <div id="mega-warning-overlay" class="mega-warning-overlay" aria-live="polite" style="display: none"></div>
+        <div id="mega-message-overlay" class="mega-message-overlay" aria-live="polite" style="display: none"></div>
+        <div id="game-over-overlay" class="game-over-overlay" style="display: none">
+          <div class="game-over-content">
+            <p class="game-over-title">Time's up! ⏱️</p>
+            <p class="game-over-score">Score: <span id="game-over-score">0</span></p>
+            <p class="game-over-best">Best this session: <span id="game-over-best">0</span></p>
+            <button type="button" class="btn btn-yes" id="heart-game-restart">Play again 💕</button>
+          </div>
+        </div>
+        <canvas id="heart-canvas"></canvas>
+        <div id="basket-container" class="basket-container">
+          <div id="basket" class="basket" title="Click to scoop!">
+            <span class="basket-icon">🧺</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== LOVE QUIZ ========== -->
+    <section id="love-quiz" class="section">
+      <div class="quiz-container">
+        <h2>❓ Love Quiz</h2>
+        <div id="quiz-content">
+          <p class="quiz-question" id="quiz-question"></p>
+          <div class="quiz-options" id="quiz-options"></div>
+          <button
+            type="button"
+            class="btn btn-quiz-next"
+            id="quiz-next"
+            style="display: none"
+          >
+            Next →
+          </button>
+        </div>
+        <div id="quiz-result" class="quiz-result" style="display: none">
+          <p class="result-text" id="result-text"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== MESSAGE BOARD (Scrapbook) ========== -->
+    <section id="message-board" class="section">
+      <div class="board-container">
+        <h2>💞 Message Board</h2>
+        <div class="board-tools">
+          <button type="button" class="btn btn-board" id="draw-mode">
+            ✏️ Draw
+          </button>
+          <button type="button" class="btn btn-board" id="text-mode">
+            📝 Type
+          </button>
+          <input
+            type="color"
+            id="brush-color"
+            value="#FF69B4"
+            title="Brush color"
+          />
+          <button type="button" class="btn btn-board" id="save-board">
+            Save your message
+          </button>
+        </div>
+        <div class="board-area">
+          <canvas id="message-canvas"></canvas>
+          <textarea
+            id="message-text"
+            placeholder="Type something sweet..."
+            style="display: none"
+          ></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PHOTO FRAME WALL ========== -->
+    <section id="photo-wall" class="section">
+      <div class="photo-wall-container">
+        <h2>🎁 Our Memories</h2>
+        <div class="polaroid-grid" id="polaroid-grid">
+          <div
+            class="polaroid-frame"
+            data-caption="That time you made me laugh so hard."
+          >
+            <img
+              class="polaroid-img"
+              src="assets/photo1.png"
+              alt="Us laughing together"
+            />
+            <p class="polaroid-caption">You're my favorite person.</p>
+          </div>
+          <div
+            class="polaroid-frame"
+            data-caption="Our best dates and your peace sign."
+          >
+            <img
+              class="polaroid-img"
+              src="assets/photo2.png"
+              alt="Date night"
+            />
+            <p class="polaroid-caption">
+              Our best dates and your favourite food spot.
+            </p>
+          </div>
+          <div class="polaroid-frame" data-caption="You're my favorite person.">
+            <img
+              class="polaroid-img"
+              src="assets/photo3.png"
+              alt="You're my favorite"
+            />
+            <p class="polaroid-caption">That time you made me laugh so hard.</p>
+          </div>
+          <div
+            class="polaroid-frame polaroid-empty"
+            data-caption="Your future memory here 😘"
+          >
+            <div class="polaroid-img empty-frame">+</div>
+            <p class="polaroid-caption">Your future memory here 😘</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== COUNTDOWN (modal or inline) ========== -->
+    <div
+      id="countdown-modal"
+      class="modal"
+      role="dialog"
+      aria-label="Countdown"
+      style="display: none"
+    >
+      <div class="modal-content">
+        <button
+          type="button"
+          class="modal-close"
+          id="countdown-close"
+          aria-label="Close"
+        >
+          ×
+        </button>
+        <h3>⭐ Our Anniversary</h3>
+        <p class="countdown-text" id="countdown-text"></p>
+        <p class="countdown-hint">Until October 7th 💕</p>
+      </div>
+    </div>
+
+    <!-- ========== EASTER EGG: hidden prompt ========== -->
+    <div id="easter-prompt" class="easter-prompt" style="display: none">
+      <input
+        type="text"
+        id="easter-input"
+        placeholder="Type a secret word..."
+        maxlength="20"
+      />
+      <button type="button" id="easter-submit">✨</button>
+    </div>
+    <div
+      id="easter-fireworks"
+      class="easter-fireworks"
+      aria-hidden="true"
+    ></div>
+
+    <!-- ========== POEM MODAL (replaces music) ========== -->
+    <div
+      id="poem-modal"
+      class="modal"
+      role="dialog"
+      aria-label="A poem for you"
+      style="display: none"
+    >
+      <div class="modal-content poem-content">
+        <button
+          type="button"
+          class="modal-close"
+          id="poem-close"
+          aria-label="Close"
+        >
+          ×
+        </button>
+        <h3>💌 For Shelly</h3>
+        <div class="poem-body">
+          <p>
+            From the day we met at school, you’ve had my heart. Your smile is
+            the first thing I think of in the morning and the last thing I see
+            before I fall asleep.
+          </p>
+          <p>
+            I don’t just love you for today, I love you for every tomorrow we’ll
+            share. I dream about our future: a home together, a family, and one
+            day standing in front of everyone we know to say “I do.” I promise
+            you a perfect promise ring when the time is right(When I actually
+            find one with a beautiful pink stone), and then a wedding ring to
+            last a lifetime.
+          </p>
+          <p>
+            You’re my person, Shelly. Today, on our anniversary, and every day
+            after. I love you.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== FINAL MESSAGE ========== -->
+    <footer class="final-message">
+      <p>
+        Thank you for being my Valentine…<br />today and every day. I love you
+        more than words can say. 💗
+      </p>
+      <p class="easter-hint">
+        Psst… press <kbd>F2</kbd> for a little surprise.
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
